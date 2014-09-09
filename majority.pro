@@ -96,8 +96,8 @@ Function majority, class_arr
 	hist = histogram(class_arr)
 	hist_max = max(hist,max_i)
 
-	if (hist_max gt n_pixels/2) then return byte(max_i)  ; One class is > 50% so return this class
+	if (hist_max gt n_pixels/2) then return, byte(max_i)  ; One class is > 50% so return this class
 
-	if ((hist[41]+hist[42]+hist[43]+hist[90]+hist[52]) gt n_pixels/2) then return 43B else return 101B
+	if ((hist[41]+hist[42]+hist[43]+hist[90]+hist[52]) gt n_pixels/2) then return, 43B else return, 101B
 
 End
