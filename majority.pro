@@ -98,6 +98,26 @@ Function majority, class_arr
 
 	if (hist_max gt n_pixels/2) then return, byte(max_i)  ; One class is > 50% so return this class
 
-	if ((hist[41]+hist[42]+hist[43]+hist[90]+hist[52]) gt n_pixels/2) then return, 43B else return, 101B
+	;check is forested/non-forested
+	total_for_pix = hist[41]+hist[42]+hist[43]+hist[90]
+	total_srb_pix = hist[51]+hist[52]
+
+	if (total_for_pix gt (0.3*n_pixels)) then begin
+		;is forest, check for dominant forest type
+		if hist[41] gt 0.5*total_for_pix then return, 41B
+		if hist[42] gt 0.5*total_for_pix then return, 42B
+		if hist[43] gt 0.5*total_for_pix then return, 43B
+		if hist[90] gt 0.5*total_for_pix then return, 90B
+		return, 43B   ;mixed
+	endif else begin
+		;non-forest, is it shrub
+		if (total_srb_pix gt (0.3*n_pixels)) then begin
+			if hist[51] gt 0.5*total_srb_pix then return, 51B
+			return, 52B
+		endif
+
+		;non-shrub, return 101 as mixed non-forest
+		return, 101B
+	endelse
 
 End
